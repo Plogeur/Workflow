@@ -13,13 +13,6 @@ rule sniffles:
 		sniffles --threads {threads} {params} --reference {input.ref} --sample-id {wildcards.sample}.trimed{wildcards.trim} --input {input.sorted} --vcf {output.vcf} > {log.sniffles} 2>> {log.sniffles}
 		"""
 
-rule vcf_sniffles:
-	input:
-		expand(
-			f"{config['res_dir']}/reads.trimed.sv_sniffles.vcf",
-			sample=config['samples'],
-			trim=config['trim'])
-
 rule cutesv:
 	input:
 		sorted=rules.samtools_sort.output,
@@ -36,13 +29,6 @@ rule cutesv:
 		cuteSV --threads {threads} {params} --sample {wildcards.sample}.trimed{wildcards.trim} {input.sorted} {input.ref} {output.vcf} {wildcards.path_res}/{wildcards.sample}.trimed{wildcards.trim} 2>> {log.cutesv}
 		rm -rf {wildcards.path_res}/{wildcards.sample}.trimed{wildcards.trim}
 		"""
-
-rule vcf_cutesv:
-	input:
-		expand(
-			f"{config['res_dir']}/reads.trimed.sv_cutesv.vcf",
-			sample=config['samples'],
-			trim=config['trim'])
 
 rule svim:
 	input:
@@ -61,13 +47,6 @@ rule svim:
 		rm -rf {wildcards.path_res}/{wildcards.sample}.trimed{wildcards.trim}_workdir_svim
 		"""
 
-rule vcf_svim:
-	input:
-		expand(
-			f"{config['res_dir']}/reads.trimed.sv_svim.vcf",
-			sample=config['samples'],
-			trim=config['trim'])
-
 rule nanovar:
 	input:
 		sorted=rules.samtools_sort.output,
@@ -85,13 +64,6 @@ rule nanovar:
 		bcftools reheader --samples {wildcards.path_res}/{wildcards.sample}.trimed{wildcards.trim}_name_nanovar.txt --output {output.vcf} {wildcards.path_res}/{wildcards.sample}.trimed{wildcards.trim}_workdir_nanovar/{wildcards.sample}.trimed{wildcards.trim}.aligned.sorted.nanovar.pass.vcf 2>> {log.nanovar}
 		rm -rf {wildcards.path_res}/{wildcards.sample}.trimed{wildcards.trim}_workdir_nanovar {wildcards.path_res}/{wildcards.sample}.trimed{wildcards.trim}_name_nanovar.txt
 		"""
-
-rule vcf_nanovar:
-	input:
-		expand(
-			f"{config['res_dir']}/reads.trimed.sv_nanovar.vcf",
-			sample=config['samples'],
-			trim=config['trim'])
 
 rule nanosv:
 	input:
@@ -114,13 +86,6 @@ rule nanosv:
 		rm {output.vcf}.tmp {wildcards.path_res}/{wildcards.sample}.trimed{wildcards.trim}_name_nanosv.txt
 		"""
 
-rule vcf_nanosv:
-	input:
-		expand(
-			f"{config['res_dir']}/reads.trimed.sv_nanosv.vcf",
-			sample=config['samples'],
-			trim=config['trim'])
-
 rule medaka_consensus:
 	input:
 		sorted=rules.samtools_sort.output,
@@ -133,12 +98,17 @@ rule medaka_consensus:
 	shell:
 		"medaka consensus --threads {threads} {params} {input.sorted} {output} 2> {log}"
 
-rule hdf:
+rule medaka_stitch:
 	input:
-		expand(
-			f"{config['res_dir']}/reads.trimed.hdf",
-			sample=config['samples'],
-			trim=config['trim'])
+		hdf=rules.medaka_consensus.output,
+		draft=f"{config['ref_dir']}/{config['ref_name']}"
+	output:
+		fasta=f"{{path_res}}/reads.trimed.fasta"
+	threads: 2
+	params:
+		config['medaka_stitch_options'],
+	shell:
+		"medaka stitch --threads {threads} {params} {input.hdf} {input.draft} {output} 2> {log}"
 
 rule medaka_snp:
 	input:
@@ -151,10 +121,3 @@ rule medaka_snp:
 		config['medaka_snp_options']
 	shell:
 		"medaka snp {params} {input} {output} 2> {log}"
-
-rule snp:
-	input:
-		expand(
-			f"{config['res_dir']}/reads.trimed.snp.vcf",
-			sample=config['samples'],
-			trim=config['trim'])

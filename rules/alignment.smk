@@ -53,17 +53,3 @@ rule samtools_index:
 		config['samtools_index_options']
 	shell:
 		"samtools index -@ {threads} {params} {input} 2> {log}"
-
-include: "variants_calling.smk"
-
-rule medaka_stitch:
-	input:
-		hdf=rules.medaka_consensus.output,
-		draft=f"{config['ref_dir']}/{config['ref_name']}"
-	output:
-		fasta=f"{{path_res}}/reads.trimed.fasta"
-	threads: 2
-	params:
-		config['medaka_stitch_options'],
-	shell:
-		"medaka stitch --threads {threads} {params} {input.hdf} {input.draft} {output} 2> {log}"
