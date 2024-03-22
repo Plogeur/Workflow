@@ -1,43 +1,49 @@
+#ClipOverlaps
 rule fgbio:
     input:
+        reference=f"{config['ref_dir']}/{config['ref_name']}",
         sorted=rules.samtools_index.output,
     output:
-        vcf=f"{config['res_dir']}/sample.trimed.fgbio.vcf"
+        vcf=temp(f"{config['res_dir']}/sample.trimed.fgbio.vcf")
     threads: 4
     params:
         config['fgbio_options']
     shell:
-        "fgbio --threads {threads} {params} --mapped_reads {input.sorted} --vcf {output.vcf}"
+        "fgbio ClipBam --threads {threads} -i {input.sorted} -r {reference} -o {output} {params} sample_fgbio_metrics.txt"
 
+#Perform variant calling with HaplotypeCaller
 rule gatk_calling:
     input:
         reference=f"{config['ref_dir']}/{config['ref_name']}",
         bam_md_clipped=rules.fgbio.output
     output:
-        gvcf=f"{config['res_dir']}/sample.complete.raw.g.vcf"
+        gvcf=temp(f"{config['res_dir']}/sample.complete.raw.g.vcf")
     threads: 4
     params:
-        confidence_threshold="30.0",
-        ploidy="{PLOIDY}"
+        config['gatk_calling_options']
     shell:
         """
-        $GATK HaplotypeCaller -t {threads} -R {input.reference} -I {input.bam_md_clipped} -ERC GVCF --output {output.gvcf} --standard-min-confidence-threshold-for-calling {params.confidence_threshold} --dont-use-soft-clipped-bases true --sample-ploidy {params.ploidy}
+        $GATK HaplotypeCaller -t {threads} -R {input.reference} -I {input.bam_md_clipped} -ERC GVCF --output {output.gvcf} {gatk_calling_options}"
         """
 
+#Genotype gVCF
 rule genotype_gvcf:
     input:
         reference=f"{config['ref_dir']}/{config['ref_name']}",
         gvcf=rules.gatk_calling.output
     output:
-        vcf=f"{config['res_dir']}/sample.complete.raw.vcf"
+        vcf=temp(f"{config['res_dir']}/sample.complete.raw.vcf")
     threads: 4
     shell:
         """
         $GATK GenotypeGVCFs -t {threads} -R {input.reference} -V {input.gvcf} -G StandardAnnotation -O {output.vcf}
         """
-
+        
+#Index featurefile
 rule index_featurefile:
     input:
-        vcf=rules.genotype_gvcf.output
-    run:
-        shell("$GATK IndexFeatureFile -I {input.vcf}")
+        gvcf=rules.genotype_gvcf.output
+    output:
+        index_vcf=f"{config['res_dir']}/sample.complete.indexed.raw.vcf"
+    shell:
+        "$GATK IndexFeatureFile -I {input.gvcf} -o {output.index_vcf}"
