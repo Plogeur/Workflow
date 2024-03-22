@@ -1,0 +1,6 @@
+Building DAG of jobs...
+MissingInputException in rule seqkit_seq in file /Users/aliasmatis/Desktop/projects/Worflow/rules/alignment.smk, line 3:
+Missing input files for rule seqkit_seq:
+    output: results/reads.trimed.fastq.gz
+    affected files:
+        data/sample.fastq

@@ -1,0 +1,27 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 2
+Rules claiming more threads will be scaled down.
+Job stats:
+job           count
+----------  -------
+seqkit_seq        1
+total             1
+
+Select jobs to execute...
+Execute 1 jobs...
+
+[Tue Mar 19 18:31:46 2024]
+localrule seqkit_seq:
+    input: data/sample.fastq
+    output: results/reads.trimed.fastq.gz
+    jobid: 0
+    reason: Missing output files: results/reads.trimed.fastq.gz
+    threads: 2
+    resources: tmpdir=/var/folders/w5/3qblr22x1kj61wv4wdd5jjhm0000gn/T
+
+[Tue Mar 19 18:31:50 2024]
+Finished job 0.
+1 of 1 steps (100%) done
+Removing temporary output results/reads.trimed.fastq.gz.
+Complete log: .snakemake/log/2024-03-19T183145.757891.snakemake.log

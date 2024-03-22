@@ -1,0 +1,107 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 2
+Rules claiming more threads will be scaled down.
+Job stats:
+job               count
+--------------  -------
+all                   1
+minimap2              1
+samtools_index        1
+samtools_sort         1
+samtools_view         1
+seqkit_seq            1
+total                 6
+
+Select jobs to execute...
+Execute 1 jobs...
+
+[Tue Mar 19 14:23:43 2024]
+localrule seqkit_seq:
+    input: data/sample.fastq
+    output: results/reads.trimed.fastq.gz
+    jobid: 5
+    reason: Missing output files: results/reads.trimed.fastq.gz
+    threads: 2
+    resources: tmpdir=/var/folders/w5/3qblr22x1kj61wv4wdd5jjhm0000gn/T
+
+[Tue Mar 19 14:23:44 2024]
+Finished job 5.
+1 of 6 steps (17%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Tue Mar 19 14:23:44 2024]
+localrule minimap2:
+    input: results/reads.trimed.fastq.gz, data/ref.fa
+    output: results/reads.trimed.sam
+    jobid: 4
+    reason: Missing output files: results/reads.trimed.sam; Input files updated by another job: results/reads.trimed.fastq.gz
+    threads: 2
+    resources: tmpdir=/var/folders/w5/3qblr22x1kj61wv4wdd5jjhm0000gn/T
+
+[Tue Mar 19 14:23:44 2024]
+Finished job 4.
+2 of 6 steps (33%) done
+Removing temporary output results/reads.trimed.fastq.gz.
+Select jobs to execute...
+Execute 1 jobs...
+
+[Tue Mar 19 14:23:44 2024]
+localrule samtools_view:
+    input: results/reads.trimed.sam
+    output: results/reads.trimed.aligned.bam
+    jobid: 3
+    reason: Missing output files: results/reads.trimed.aligned.bam; Input files updated by another job: results/reads.trimed.sam
+    threads: 2
+    resources: tmpdir=/var/folders/w5/3qblr22x1kj61wv4wdd5jjhm0000gn/T
+
+[Tue Mar 19 14:23:44 2024]
+Finished job 3.
+3 of 6 steps (50%) done
+Removing temporary output results/reads.trimed.sam.
+Select jobs to execute...
+Execute 1 jobs...
+
+[Tue Mar 19 14:23:44 2024]
+localrule samtools_sort:
+    input: results/reads.trimed.aligned.bam
+    output: results/reads.trimed.aligned.sorted.bam
+    jobid: 2
+    reason: Missing output files: results/reads.trimed.aligned.sorted.bam; Input files updated by another job: results/reads.trimed.aligned.bam
+    threads: 2
+    resources: tmpdir=/var/folders/w5/3qblr22x1kj61wv4wdd5jjhm0000gn/T
+
+[Tue Mar 19 14:23:44 2024]
+Finished job 2.
+4 of 6 steps (67%) done
+Removing temporary output results/reads.trimed.aligned.bam.
+Select jobs to execute...
+Execute 1 jobs...
+
+[Tue Mar 19 14:23:44 2024]
+localrule samtools_index:
+    input: results/reads.trimed.aligned.sorted.bam
+    output: results/reads.trimed.aligned.sorted.bam.bai
+    jobid: 1
+    reason: Missing output files: results/reads.trimed.aligned.sorted.bam.bai; Input files updated by another job: results/reads.trimed.aligned.sorted.bam
+    threads: 2
+    resources: tmpdir=/var/folders/w5/3qblr22x1kj61wv4wdd5jjhm0000gn/T
+
+[Tue Mar 19 14:23:45 2024]
+Finished job 1.
+5 of 6 steps (83%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Tue Mar 19 14:23:45 2024]
+localrule all:
+    input: results/reads.trimed.aligned.sorted.bam.bai
+    jobid: 0
+    reason: Input files updated by another job: results/reads.trimed.aligned.sorted.bam.bai
+    resources: tmpdir=/var/folders/w5/3qblr22x1kj61wv4wdd5jjhm0000gn/T
+
+[Tue Mar 19 14:23:45 2024]
+Finished job 0.
+6 of 6 steps (100%) done
+Complete log: .snakemake/log/2024-03-19T142337.921591.snakemake.log

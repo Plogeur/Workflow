@@ -1,14 +1,14 @@
 workdir: "./"
 configfile: "config/config.yaml"
-include: "rules/variants_calling.smk"
+
+include: "rules/alignment.smk",
+         "rules/variants_calling.smk",
+         "rules/variants_analysis.smk"
 
 # usage : 
 # snakemake --cores <nb_core_max>
 
 rule all:
-	input:
-		expand(f"{config['res_dir']}/reads.seqstats", config=config),
-        expand(f"{config['res_dir']}/reads.trimed.seqstats", config=config),
-        expand(f"{config['res_dir']}/reads.trimed.flagstat", config=config),
-        expand(f"{config['res_dir']}/reads.trimed.sv_sniffles.vcf.stats", config=config),
-        expand(f"{config['res_dir']}/reads.trimed.snp.vcf.stats", config=config)
+    input:
+        #f"{config['res_dir']}/sample_fastqc.html",
+        f"{config['res_dir']}/reads.trimed.aligned.sorted.bam.bai"

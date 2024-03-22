@@ -1,0 +1,25 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 2
+Rules claiming more threads will be scaled down.
+Job stats:
+job           count
+----------  -------
+seqkit_seq        1
+total             1
+
+Select jobs to execute...
+Execute 1 jobs...
+
+[Tue Mar 19 13:37:50 2024]
+localrule seqkit_seq:
+    input: data/sample.fastq
+    output: results/reads.trimed.fastq.gz
+    jobid: 0
+    reason: Missing output files: results/reads.trimed.fastq.gz
+    threads: 2
+    resources: tmpdir=/var/folders/w5/3qblr22x1kj61wv4wdd5jjhm0000gn/T
+
+RuleException in rule seqkit_seq in file /Users/aliasmatis/Desktop/projects/Worflow/rules/alignment.smk, line 1:
+AttributeError: 'Wildcards' object has no attribute 'trim', when formatting the following:
+seqkit seq -j {threads} {params} -m {wildcards.trim} {input} -o {output} 2> {log}
