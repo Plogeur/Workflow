@@ -14,7 +14,12 @@ rule all:
     input:
         f"{config['res_dir']}/sample.trimed.sam"
         #f"{config['res_dir']}/sample.trimed.aligned.sorted.bam.bai"
-"""
 rule all:
     input:
         f"{config['res_dir']}/sample.trimed.sam"
+"""
+
+rule all:
+    input: 
+        expand("{sample}.{genome}.bam", genome=GENOMES, sample=SAMPLES)
+

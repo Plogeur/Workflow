@@ -28,6 +28,10 @@ rule reads_trimming:
         '''
 """
 
+workdir: "/path/to/BAMs/"
+(GENOMES,)=glob_wildcards("data/{genome}.fa")
+(SAMPLES,)=glob_wildcards("data/{sample}.fastq")
+
 #bwa index -p indexed data/ref.fa
 #bwa mem -t 2 indexed data/sample.fastq > results/sample.trimed.sam
 
