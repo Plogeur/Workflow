@@ -1,0 +1,32 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 2
+Rules claiming more threads will be scaled down.
+Job stats:
+job          count
+---------  -------
+bwa_index        1
+total            1
+
+Select jobs to execute...
+Execute 1 jobs...
+
+[Sat Mar 23 15:35:58 2024]
+localrule bwa_index:
+    input: data/ref.fa
+    output: results/indexed.amb, results/indexed.ann, results/indexed.bwt, results/indexed.pac, results/indexed.sa
+    jobid: 0
+    reason: Missing output files: results/indexed.ann, results/indexed.sa, results/indexed.bwt, results/indexed.amb, results/indexed.pac
+    threads: 2
+    resources: tmpdir=/var/folders/w5/3qblr22x1kj61wv4wdd5jjhm0000gn/T
+
+RuleException in rule bwa_index in file /Users/aliasmatis/Desktop/projects/Worflow/rules/alignment.smk, line 15:
+NameError: The name "'res_dir'" is unknown in this context. Please make sure that you defined that variable. Also note that braces not used for variable access have to be escaped by repeating them, i.e. {{print $1}}, when formatting the following:
+
+		bwa index -p {config['res_dir']}/indexed {input.ref}
+		mv indexed.amb {output.amb}
+		mv indexed.ann {output.ann}
+		mv indexed.bwt {output.bwt}
+		mv indexed.pac {output.pac}
+		mv indexed.sa {output.sa}
+		

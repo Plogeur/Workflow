@@ -8,7 +8,13 @@ include: "rules/alignment.smk",
 # usage : 
 # snakemake --cores <nb_core_max>
 
+# Rule to run all other rules
+"""
 rule all:
     input:
-        #f"{config['res_dir']}/sample_fastqc.html",
-        f"{config['res_dir']}/reads.trimed.aligned.sorted.bam.bai"
+        f"{config['res_dir']}/sample.trimed.sam"
+        #f"{config['res_dir']}/sample.trimed.aligned.sorted.bam.bai"
+"""
+rule all:
+    input:
+        f"{config['res_dir']}/sample.trimed.sam"

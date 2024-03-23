@@ -1,3 +1,4 @@
+"""
 # Read's quality control
 rule fastqc:
 	input:
@@ -9,33 +10,53 @@ rule fastqc:
 	shell:
 		"fastqc {input} --threads {threads} --outdir results"
 
-# Sequence trimming
-rule seqkit_seq:
-	input:
-		fastq=config['sample']
-	output:
-		trimed=temp(f"{config['res_dir']}/sample.trimed.fastq.gz")
-	threads: 2
-	params:
-		config['seqkit_seq_options']
-	shell:
-		"seqkit seq -j {threads} {params} -m 50 {input} -o {output}"
+rule reads_trimming:
+    input:
+        reads="{reads}"
+    output:
+        trimmed="{SAMPLE_NAME}_trimmed1.fastq.gz",
+        failed="{SAMPLE_NAME}_failed.fastq.gz",
+        report="{SAMPLE_NAME}_adapters_removal_report.html"
+    params:
+        threads="{THREADS}"
+    log:
+        "logs/fastp_{SAMPLE_NAME}.log"
+    shell:
+        '''
+        $FASTP -i {input.reads} -o {output.trimmed} --failed_out {output.failed} \
+        --trim_poly_x --overrepresentation_analysis -h {output.report} -w {params.threads}
+        '''
+"""
 
-# Mapping with bwa
-rule bwa:
+#bwa index -p indexed data/ref.fa
+#bwa mem -t 2 indexed data/sample.fastq > results/sample.trimed.sam
+
+rule bwa_index:
 	input:
-		reads=rules.seqkit_seq.output,
-		ref=f"{config['ref_dir']}/{config['ref_name']}"
+		ref=f"{config['ref']}"
 	output:
-		sam=temp(f"{config['res_dir']}/sample.trimed.sam")
-	threads: 4
+		index=touch("results/indexed")
+	log:
+		"logs/bwa_index.log"
 	shell:
-		"bwa mem -t {threads} {params} -R {input.ref} {input.reads} -o {output}"
+		"bwa index -p {output.index} {input.ref}"
+
+rule bwa_mapping:
+	input:
+		indexed="results/indexed",
+		fastq="data/sample.fastq"
+	output:
+		sam=f"{config['res_dir']}/sample.trimed.sam"
+	threads: 2
+	log:
+		"logs/bwa_mapping.log"
+	shell:
+		"bwa mem -t {params.threads} {input.indexed} {input.fastq} > {output.sam}"
 
 # Convert SAM to BAM with samtools view
 rule samtools_view:
 	input:
-		sam=rules.bwa.output
+		sam=rules.bwa_mapping.output
 	output:
 		aligned=temp(f"{config['res_dir']}/sample.trimed.aligned.bam")
 	threads: 2

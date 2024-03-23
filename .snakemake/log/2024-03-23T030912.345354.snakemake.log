@@ -1,0 +1,27 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 2
+Rules claiming more threads will be scaled down.
+Job stats:
+job           count
+----------  -------
+fastp_trim        1
+total             1
+
+Select jobs to execute...
+Execute 1 jobs...
+
+[Sat Mar 23 03:09:12 2024]
+localrule fastp_trim:
+    input: data/sample.fastq
+    output: results/sample_trimmed.fastq.gz, results/sample_failed.fastq.gz, results/sample_adapters_removal_report.html
+    jobid: 0
+    reason: Missing output files: results/sample_adapters_removal_report.html, results/sample_failed.fastq.gz, results/sample_trimmed.fastq.gz
+    threads: 2
+    resources: tmpdir=/var/folders/w5/3qblr22x1kj61wv4wdd5jjhm0000gn/T
+
+RuleException in rule fastp_trim in file /Users/aliasmatis/Desktop/projects/Worflow/rules/alignment.smk, line 15:
+AttributeError: 'InputFiles' object has no attribute 'reads_R1', when formatting the following:
+
+        fastp -i {input.reads_R1}         -o {output.trimmed} --failed_out {output.failed}         --trim_poly_x --overrepresentation_analysis -h {output.report} -w {threads}
+        

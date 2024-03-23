@@ -1,0 +1,40 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 2
+Rules claiming more threads will be scaled down.
+Job stats:
+job          count
+---------  -------
+bwa_index        1
+total            1
+
+Select jobs to execute...
+Execute 1 jobs...
+
+[Sat Mar 23 16:49:21 2024]
+localrule bwa_index:
+    input: data/ref.fa
+    output: results/indexed
+    log: logs/bwa_index.log
+    jobid: 0
+    reason: Code has changed since last execution
+    resources: tmpdir=/var/folders/w5/3qblr22x1kj61wv4wdd5jjhm0000gn/T
+
+[Sat Mar 23 16:49:21 2024]
+Error in rule bwa_index:
+    jobid: 0
+    input: data/ref.fa
+    output: results/indexed
+    log: logs/bwa_index.log (check log file(s) for error details)
+    shell:
+        
+		bwa index -p results/indexed data/ref.fa
+		rm results/indexed
+		
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2024-03-23T164921.335750.snakemake.log
+WorkflowError:
+At least one job did not complete successfully.

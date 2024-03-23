@@ -3,8 +3,7 @@
 ######################
 
 sample: 'data/sample.fastq'
-ref_dir: 'data'
-ref_name: 'ref.fa'
+ref: 'data/ref.fa'
 res_dir: 'results'
 
 ######################
@@ -13,11 +12,12 @@ res_dir: 'results'
 
 seqkit_stats_options: '-a'
 seqkit_seq_options: '-g'
-fgbio_options: '--clip-overlapping-reads -c Hard -m' #
-samtools_flagstat_options: ''
+fastp_trim: '--trim_poly_x --overrepresentation_analysis'
+bwa_options: '@RG\tID:sample\tPU:lane\tLB:sample\tSM:sample\tCN:Illumina_Variant_calling\tPL:ILLUMINA'
+fgbio_options: '--clip-overlapping-reads -c Hard -m'
+samtools_index_options: ''
 samtools_view_options: '-bhS -F 4'
 samtools_sort_options: '-l 9'
-samtools_index_options: ''
 bamCoverage_options: '--normalizeUsing RPGC -of "bedgraph"'
 plotCoverage_options: '--smartLabels --plotFileFormat pdf'
 gatk_calling_options: '--standard-min-confidence-threshold-for-calling 30.0 --dont-use-soft-clipped-bases true --sample-ploidy 2'

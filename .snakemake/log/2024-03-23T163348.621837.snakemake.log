@@ -1,0 +1,30 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 2
+Rules claiming more threads will be scaled down.
+Job stats:
+job          count
+---------  -------
+bwa_index        1
+total            1
+
+Select jobs to execute...
+Execute 1 jobs...
+
+[Sat Mar 23 16:33:48 2024]
+localrule bwa_index:
+    input: data/ref.fa
+    output: results/indexed
+    jobid: 0
+    reason: Missing output files: results/indexed
+    resources: tmpdir=/var/folders/w5/3qblr22x1kj61wv4wdd5jjhm0000gn/T
+
+Waiting at most 5 seconds for missing files.
+MissingOutputException in rule bwa_index in file /Users/aliasmatis/Desktop/projects/Worflow/rules/alignment.smk, line 17:
+Job 0 completed successfully, but some output files are missing. Missing files after 5 seconds. This might be due to filesystem latency. If that is the case, consider to increase the wait time with --latency-wait:
+results/indexed (missing locally, parent dir contents: .DS_Store, indexed.bwt, indexed.amb, indexed.sa, indexed.ann, indexed.pac)
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2024-03-23T163348.621837.snakemake.log
+WorkflowError:
+At least one job did not complete successfully.

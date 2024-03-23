@@ -1,0 +1,27 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 2
+Rules claiming more threads will be scaled down.
+Job stats:
+job          count
+---------  -------
+bwa_index        1
+total            1
+
+Select jobs to execute...
+Execute 1 jobs...
+
+[Sat Mar 23 17:37:23 2024]
+localrule bwa_index:
+    input: data/ref.fa
+    output: results/indexed, results/sample.trimed.sam
+    log: logs/bwa_index.log
+    jobid: 0
+    reason: Code has changed since last execution
+    resources: tmpdir=/var/folders/w5/3qblr22x1kj61wv4wdd5jjhm0000gn/T
+
+RuleException in rule bwa_index in file /Users/aliasmatis/Desktop/projects/Worflow/rules/alignment.smk, line 34:
+AttributeError: 'InputFiles' object has no attribute 'fastq', when formatting the following:
+
+		bwa index -p {output.index} {input.ref} && bwa mem -t {threads} {output.index} {input.fastq} > {output.sam}
+		
