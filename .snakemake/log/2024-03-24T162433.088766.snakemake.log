@@ -1,0 +1,41 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 2
+Rules claiming more threads will be scaled down.
+Job stats:
+job                  count
+-----------------  -------
+all                      1
+gatk_calling             1
+genotype_gvcf            1
+index_featurefile        1
+total                    4
+
+Select jobs to execute...
+Execute 1 jobs...
+
+[Sun Mar 24 16:24:34 2024]
+localrule gatk_calling:
+    input: data/ref.fa, results/sample.trimed.aligned.sorted.bam.bai
+    output: results/sample.complete.raw.g.vcf
+    jobid: 3
+    reason: Missing output files: results/sample.complete.raw.g.vcf
+    threads: 2
+    resources: tmpdir=/var/folders/w5/3qblr22x1kj61wv4wdd5jjhm0000gn/T
+
+[Sun Mar 24 16:24:34 2024]
+Error in rule gatk_calling:
+    jobid: 3
+    input: data/ref.fa, results/sample.trimed.aligned.sorted.bam.bai
+    output: results/sample.complete.raw.g.vcf
+    shell:
+        
+        $GATK HaplotypeCaller -t 2 -R data/ref.fa -I results/sample.trimed.aligned.sorted.bam.bai -ERC GVCF --output results/sample.complete.raw.g.vcf --standard-min-confidence-threshold-for-calling 30.0 --dont-use-soft-clipped-bases true --sample-ploidy 2"
+        
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2024-03-24T162433.088766.snakemake.log
+WorkflowError:
+At least one job did not complete successfully.

@@ -1,0 +1,29 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 2
+Rules claiming more threads will be scaled down.
+Job stats:
+job                  count
+-----------------  -------
+all                      1
+fgbio                    1
+gatk_calling             1
+genotype_gvcf            1
+index_featurefile        1
+total                    5
+
+Select jobs to execute...
+Execute 1 jobs...
+
+[Sun Mar 24 16:06:11 2024]
+localrule fgbio:
+    input: data/ref.fa, results/sample.trimed.aligned.sorted.bam.bai
+    output: results/sample.trimed.fgbio.vcf
+    jobid: 4
+    reason: Missing output files: results/sample.trimed.fgbio.vcf
+    threads: 2
+    resources: tmpdir=/var/folders/w5/3qblr22x1kj61wv4wdd5jjhm0000gn/T
+
+RuleException in rule fgbio in file /Users/aliasmatis/Desktop/projects/Worflow/rules/variants_calling.smk, line 2:
+NameError: The name 'reference' is unknown in this context. Please make sure that you defined that variable. Also note that braces not used for variable access have to be escaped by repeating them, i.e. {{print $1}}, when formatting the following:
+fgbio ClipBam --threads {threads} -i {input.sorted} -r {reference} -o {output} {params} sample_fgbio_metrics.txt

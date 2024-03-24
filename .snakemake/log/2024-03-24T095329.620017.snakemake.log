@@ -1,0 +1,4 @@
+Building DAG of jobs...
+WildcardError in rule bwa_aln in file /Users/aliasmatis/Desktop/projects/Worflow/Snakefile, line 15:
+Wildcards in input files cannot be determined from output files: (rule bwa_aln, line 35, /Users/aliasmatis/Desktop/projects/Worflow/Snakefile)
+'genome'

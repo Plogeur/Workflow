@@ -1,0 +1,4 @@
+Building DAG of jobs...
+WildcardError in rule all in file /Users/aliasmatis/Desktop/projects/Worflow/Snakefile, line 1:
+Wildcards in input files cannot be determined from output files: (rule all, line 1, /Users/aliasmatis/Desktop/projects/Worflow/Snakefile)
+'sample'

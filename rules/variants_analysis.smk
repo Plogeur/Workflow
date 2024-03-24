@@ -3,22 +3,22 @@ rule filter_snps:
     input:
         vcf=rules.index_featurefile.output
     output:
-        snps_vcf=temp(f"{config['res_dir']}/sample.snps.raw.vcf")
+        snps_vcf=temp("results/sample.snps.raw.vcf")
     threads: 4
     params:
-		config['filter_snps_options']
+        config['filter_snps_options']
     shell:
         """
-        $GATK SelectVariants -t {threads} {filter_snps_options} --output {output.snps_vcf} -V {input.vcf}
+        $GATK SelectVariants -t {threads} {params} --output {output.snps_vcf} -V {input.vcf}
         """
 
-#Filter SNPs 
+#Filter SNPs 2 (the return)
 rule filter_snps_2:
     input:
-        reference=f"{config['ref_dir']}/{config['ref_name']}",
+        reference="data/ref.fa",
         indels_vcf=rules.filter_snps.output
     output:
-        filtered_vcf=temp(f"{config['res_dir']}/sample.indels.filtered.vcf")
+        filtered_vcf=temp("results/sample.indels.filtered.vcf")
     shell:
         """
         $GATK VariantFiltration -R {input.reference} -V {input.indels_vcf} \
@@ -31,7 +31,7 @@ rule filter_indel:
     input:
         vcf=rules.index_featurefile.output
     output:
-        snps_vcf=temp(f"{config['res_dir']}/sample.snps.raw.vcf")
+        snps_vcf=temp("results/sample.snps.raw.vcf")
     threads: 4
     shell:
         """
@@ -44,7 +44,7 @@ rule merge_vcfs:
         snps_filtered_vcf=rules.filter_snps_2.output,
         indels_filtered_vcf=rules.filter_indel.output
     output:
-        variants_filtered_tmp_vcf=temp(f"{config['res_dir']}/sample.variants.filtered_tmp.vcf")
+        variants_filtered_tmp_vcf=temp("results/sample.variants.filtered_tmp.vcf")
     shell:
         """
         $GATK MergeVcfs -I {input.snps_filtered_vcf} -I {input.indels_filtered_vcf} -O {output.variants_filtered_tmp_vcf}
@@ -53,10 +53,10 @@ rule merge_vcfs:
 #Keep only filtered variants
 rule keep_filtered_variants:
     input:
-        reference=f"{config['ref_dir']}/{config['ref_name']}",
+        reference="data/ref.fa",
         variants_filtered_tmp_vcf=rules.merge_vcfs.output
     output:
-        variants_filtered_vcf=f"{config['res_dir']}/sample.variants.filtered.vcf"
+        variants_filtered_vcf="results/sample.variants.filtered.vcf"
     shell:
         """
         $GATK SelectVariants -R {input.reference} --variant {input.variants_filtered_tmp_vcf} --exclude-filtered -O {output.variants_filtered_vcf}
@@ -64,23 +64,23 @@ rule keep_filtered_variants:
 
 #TODO : REPARE THE 2 LAST RULES
 rule bcftools_filter:
-	input:
-		vcf=rules.keep_filtered_variants.output
-	output:
-		filter=protected(f"{config['res_dir']}/reads.trimed.sv.filtered.vcf")
-	threads: 2
-	params:
-		config['bcftools_filter_options']
-	shell:
-		"bcftools filter --threads {threads} {params} {input} -o {output}"
+    input:
+        vcf=rules.keep_filtered_variants.output
+    output:
+        filter=protected("results/reads.trimed.sv.filtered.vcf")
+    threads: 2
+    params:
+        config['bcftools_filter_options']
+    shell:
+        "bcftools filter --threads {threads} {params} {input} -o {output}"
 
 rule vcat:
     input:
         sorted=rules.samtools_sort.output,
         index=rules.samtools_index.output,
-        ref=f"{config['ref_dir']}/{config['ref_name']}"
+        ref="data/ref.fa"
     output:
-        vcf=f"{config['res_dir']}/reads.trimed.sv_cutesv.vcf"
+        vcf="results/reads.trimed.sv_cutesv.vcf"
     threads: 4
     params:
         config['cutesv_options']

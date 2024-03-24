@@ -1,0 +1,5 @@
+Building DAG of jobs...
+MissingInputException in rule all in file /Users/aliasmatis/Desktop/projects/Worflow/Snakefile, line 9:
+Missing input files for rule all:
+    affected files:
+        results/sample.complete.indexed.raw.vcf

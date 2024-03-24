@@ -1,0 +1,4 @@
+Building DAG of jobs...
+WildcardError in rule bwa_mapping in file /Users/aliasmatis/Desktop/projects/Worflow/Snakefile, line 39:
+Wildcards in input files cannot be determined from output files: (rule bwa_mapping, line 67, /Users/aliasmatis/Desktop/projects/Worflow/Snakefile)
+'sample'

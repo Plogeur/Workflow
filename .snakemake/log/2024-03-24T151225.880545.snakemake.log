@@ -1,0 +1,43 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 2
+Rules claiming more threads will be scaled down.
+Job stats:
+job               count
+--------------  -------
+all                   1
+bcftools_call         1
+bwa_map               1
+plot_quals            1
+samtools_index        1
+samtools_sort         1
+total                 6
+
+Select jobs to execute...
+Execute 1 jobs...
+
+[Sun Mar 24 15:12:26 2024]
+localrule bwa_map:
+    input: data/ref.fa, data/samples/R1.fastq
+    output: mapped_reads/R1.bam
+    jobid: 4
+    reason: Missing output files: mapped_reads/R1.bam
+    wildcards: sample=R1
+    resources: tmpdir=/var/folders/w5/3qblr22x1kj61wv4wdd5jjhm0000gn/T
+
+[Sun Mar 24 15:12:27 2024]
+Error in rule bwa_map:
+    jobid: 4
+    input: data/ref.fa, data/samples/R1.fastq
+    output: mapped_reads/R1.bam
+    shell:
+        bwa mem data/ref.fa data/samples/R1.fastq | samtools view -Sb - > mapped_reads/R1.bam
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Removing output files of failed job bwa_map since they might be corrupted:
+mapped_reads/R1.bam
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2024-03-24T151225.880545.snakemake.log
+WorkflowError:
+At least one job did not complete successfully.

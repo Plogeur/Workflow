@@ -1,0 +1,6 @@
+Building DAG of jobs...
+MissingInputException in rule bwa_mapping in file /Users/aliasmatis/Desktop/projects/Worflow/rules/alignment.smk, line 44:
+Missing input files for rule bwa_mapping:
+    output: results/sample.trimed.sam
+    affected files:
+        result/indexed

@@ -1,0 +1,30 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 2
+Rules claiming more threads will be scaled down.
+Job stats:
+job                  count
+-----------------  -------
+all                      1
+gatk_calling             1
+genotype_gvcf            1
+index_featurefile        1
+total                    4
+
+Select jobs to execute...
+Execute 1 jobs...
+
+[Sun Mar 24 16:22:14 2024]
+localrule gatk_calling:
+    input: data/ref.fa, results/sample.trimed.aligned.sorted.bam.bai
+    output: results/sample.complete.raw.g.vcf
+    jobid: 3
+    reason: Missing output files: results/sample.complete.raw.g.vcf
+    threads: 2
+    resources: tmpdir=/var/folders/w5/3qblr22x1kj61wv4wdd5jjhm0000gn/T
+
+RuleException in rule gatk_calling in file /Users/aliasmatis/Desktop/projects/Worflow/rules/variants_calling.smk, line 16:
+NameError: The name 'gatk_calling_options' is unknown in this context. Please make sure that you defined that variable. Also note that braces not used for variable access have to be escaped by repeating them, i.e. {{print $1}}, when formatting the following:
+
+        $GATK HaplotypeCaller -t {threads} -R {input.reference} -I {input.bam_md_clipped} -ERC GVCF --output {output.gvcf} {gatk_calling_options}"
+        

@@ -1,38 +1,38 @@
 #ClipOverlaps
 rule fgbio:
     input:
-        reference=f"{config['ref_dir']}/{config['ref_name']}",
+        reference="data/ref.fa",
         sorted=rules.samtools_index.output,
     output:
-        vcf=temp(f"{config['res_dir']}/sample.trimed.fgbio.vcf")
+        temp("results/sample.trimed.fgbio.vcf")
     threads: 4
     params:
         config['fgbio_options']
     shell:
-        "fgbio ClipBam --threads {threads} -i {input.sorted} -r {reference} -o {output} {params} sample_fgbio_metrics.txt"
+        "fgbio ClipBam -i {input.sorted} -r {input.reference} -o {output} {params} sample_fgbio_metrics.txt"
 
 #Perform variant calling with HaplotypeCaller
 rule gatk_calling:
     input:
-        reference=f"{config['ref_dir']}/{config['ref_name']}",
+        reference="data/ref.fa",
         bam_md_clipped=rules.fgbio.output
     output:
-        gvcf=temp(f"{config['res_dir']}/sample.complete.raw.g.vcf")
+        gvcf=temp("results/sample.complete.raw.g.vcf")
     threads: 4
     params:
         config['gatk_calling_options']
     shell:
         """
-        $GATK HaplotypeCaller -t {threads} -R {input.reference} -I {input.bam_md_clipped} -ERC GVCF --output {output.gvcf} {gatk_calling_options}"
+        $GATK HaplotypeCaller -t {threads} -R {input.reference} -I {input.bam_md_clipped} -ERC GVCF --output {output.gvcf} {params}"
         """
 
 #Genotype gVCF
 rule genotype_gvcf:
     input:
-        reference=f"{config['ref_dir']}/{config['ref_name']}",
+        reference="data/ref.fa",
         gvcf=rules.gatk_calling.output
     output:
-        vcf=temp(f"{config['res_dir']}/sample.complete.raw.vcf")
+        vcf=temp("results/sample.complete.raw.vcf")
     threads: 4
     shell:
         """
@@ -44,6 +44,6 @@ rule index_featurefile:
     input:
         gvcf=rules.genotype_gvcf.output
     output:
-        index_vcf=f"{config['res_dir']}/sample.complete.indexed.raw.vcf"
+        index_vcf="results/sample.complete.indexed.raw.vcf"
     shell:
         "$GATK IndexFeatureFile -I {input.gvcf} -o {output.index_vcf}"

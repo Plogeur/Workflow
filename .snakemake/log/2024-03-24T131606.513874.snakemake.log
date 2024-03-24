@@ -1,0 +1,27 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 2
+Rules claiming more threads will be scaled down.
+Job stats:
+job          count
+---------  -------
+all              1
+bwa_index        1
+total            2
+
+Select jobs to execute...
+Execute 1 jobs...
+
+[Sun Mar 24 13:16:06 2024]
+Job 1: Index du génome de référence :sample
+Reason: Missing output files: data/sample.fa.bwt
+
+Waiting at most 5 seconds for missing files.
+MissingOutputException in rule bwa_index in file /Users/aliasmatis/Desktop/projects/Worflow/Snakefile, line 24:
+Job 1  completed successfully, but some output files are missing. Missing files after 5 seconds. This might be due to filesystem latency. If that is the case, consider to increase the wait time with --latency-wait:
+data/sample.fa.bwt (missing locally, parent dir contents: sample.fastq, svs.vcf, instructions.pdf, .DS_Store, ref.fa, ref.fa.bwt, ref.fa.amb, ref.fa.pac, ref.fa.sa, ref.fa.ann)
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2024-03-24T131606.513874.snakemake.log
+WorkflowError:
+At least one job did not complete successfully.

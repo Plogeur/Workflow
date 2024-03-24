@@ -1,0 +1,6 @@
+Building DAG of jobs...
+MissingInputException in rule samtools_sort in file /Users/aliasmatis/Desktop/projects/Worflow/rules/alignment.smk, line 76:
+Missing input files for rule samtools_sort:
+    output: results/sample.trimed.aligned.sorted.bam
+    affected files:
+        results/sample.trimed.aligned.bam

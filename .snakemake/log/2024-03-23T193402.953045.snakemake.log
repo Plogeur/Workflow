@@ -1,0 +1,6 @@
+Building DAG of jobs...
+MissingInputException in rule bwa_index in file /Users/aliasmatis/Desktop/projects/Worflow/Snakefile, line 6:
+Missing input files for rule bwa_index:
+    output: ref.fa.bwt
+    affected files:
+        ref.fa

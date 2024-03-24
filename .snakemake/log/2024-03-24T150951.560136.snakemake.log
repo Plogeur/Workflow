@@ -1,0 +1,8 @@
+Building DAG of jobs...
+MissingInputException in rule bwa_map in file /Users/aliasmatis/Desktop/projects/Worflow/Snakefile, line 24:
+Missing input files for rule bwa_map:
+    output: mapped_reads/data/sample.bam
+    wildcards: sample=data/sample
+    affected files:
+        data/samples/data/sample.fastq
+        data/genome.fa
