@@ -21,7 +21,7 @@ snakemake --cores <nb_core_max>
 Reads Quality Check: Perform quality check on input reads using FastQC.
 
 <p align="center">
-  <img src="https://github.com/Plogeur/Worflow/blob/main/img/worflow.jpg" alt="Nom_de_l'image">
+  <img src="https://github.com/Plogeur/Workflow/blob/main/img/worflow.jpg" alt="Nom_de_l'image">
 </p>
 
 1.Reads Trimming: Trim adapter sequences and low-quality bases from reads using Fastp.
