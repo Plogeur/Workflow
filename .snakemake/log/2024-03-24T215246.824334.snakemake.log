@@ -1,0 +1,6 @@
+Building DAG of jobs...
+MissingInputException in rule cleansam in file /Users/aliasmatis/Desktop/projects/Worflow/rules/alignment.smk, line 61:
+Missing input files for rule cleansam:
+    output: results/sample.clean.bam
+    affected files:
+        data/genome.fa

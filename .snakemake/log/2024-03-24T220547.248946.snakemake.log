@@ -1,0 +1,114 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 2
+Rules claiming more threads will be scaled down.
+Job stats:
+job               count
+--------------  -------
+all                   1
+bwa_index             1
+bwa_mapping           1
+fixmate               1
+samtools_index        1
+samtools_sort         1
+samtools_view         1
+total                 7
+
+Select jobs to execute...
+Execute 1 jobs...
+
+[Sun Mar 24 22:05:48 2024]
+localrule bwa_index:
+    input: data/ref.fa
+    output: results/sample.indexed.bwt
+    log: logs/bwa_index.log
+    jobid: 6
+    reason: Missing output files: results/sample.indexed.bwt
+    resources: tmpdir=/var/folders/w5/3qblr22x1kj61wv4wdd5jjhm0000gn/T
+
+[Sun Mar 24 22:05:48 2024]
+Finished job 6.
+1 of 7 steps (14%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Sun Mar 24 22:05:48 2024]
+localrule bwa_mapping:
+    input: results/sample.indexed.bwt, data/sample.fastq
+    output: results/sample.sam
+    log: logs/bwa_mapping.log
+    jobid: 5
+    reason: Missing output files: results/sample.sam; Input files updated by another job: results/sample.indexed.bwt
+    threads: 2
+    resources: tmpdir=/var/folders/w5/3qblr22x1kj61wv4wdd5jjhm0000gn/T
+
+[Sun Mar 24 22:05:48 2024]
+Finished job 5.
+2 of 7 steps (29%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Sun Mar 24 22:05:48 2024]
+localrule fixmate:
+    input: results/sample.sam
+    output: results/sample.fixed.sam
+    log: logs/fixmate.log
+    jobid: 4
+    reason: Missing output files: results/sample.fixed.sam; Input files updated by another job: results/sample.sam
+    threads: 2
+    resources: tmpdir=/var/folders/w5/3qblr22x1kj61wv4wdd5jjhm0000gn/T
+
+[Sun Mar 24 22:05:48 2024]
+Finished job 4.
+3 of 7 steps (43%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Sun Mar 24 22:05:48 2024]
+localrule samtools_view:
+    input: results/sample.fixed.sam
+    output: results/sample.bam
+    jobid: 3
+    reason: Missing output files: results/sample.bam; Input files updated by another job: results/sample.fixed.sam
+    threads: 2
+    resources: tmpdir=/var/folders/w5/3qblr22x1kj61wv4wdd5jjhm0000gn/T
+
+[Sun Mar 24 22:05:49 2024]
+Finished job 3.
+4 of 7 steps (57%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Sun Mar 24 22:05:49 2024]
+localrule samtools_sort:
+    input: results/sample.bam
+    output: results/sample.sorted.bam
+    jobid: 2
+    reason: Missing output files: results/sample.sorted.bam; Input files updated by another job: results/sample.bam
+    threads: 2
+    resources: tmpdir=/var/folders/w5/3qblr22x1kj61wv4wdd5jjhm0000gn/T
+
+[Sun Mar 24 22:05:49 2024]
+Finished job 2.
+5 of 7 steps (71%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Sun Mar 24 22:05:49 2024]
+localrule samtools_index:
+    input: results/sample.sorted.bam
+    output: results/sample.bam.bai
+    jobid: 1
+    reason: Missing output files: results/sample.bam.bai; Input files updated by another job: results/sample.sorted.bam
+    threads: 2
+    resources: tmpdir=/var/folders/w5/3qblr22x1kj61wv4wdd5jjhm0000gn/T
+
+Waiting at most 5 seconds for missing files.
+MissingOutputException in rule samtools_index in file /Users/aliasmatis/Desktop/projects/Worflow/rules/alignment.smk, line 68:
+Job 1  completed successfully, but some output files are missing. Missing files after 5 seconds. This might be due to filesystem latency. If that is the case, consider to increase the wait time with --latency-wait:
+results/sample.bam.bai (missing locally, parent dir contents: sample.indexed.amb, sample.indexed.bwt, sample.fixed.sam, .DS_Store, sample.sorted.bam.bai, sample.indexed.sa, sample.sorted.bam, sample.indexed.ann, sample.bam, sample.indexed.pac, sample.sam)
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2024-03-24T220547.248946.snakemake.log
+WorkflowError:
+At least one job did not complete successfully.

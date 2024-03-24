@@ -1,0 +1,31 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 2
+Rules claiming more threads will be scaled down.
+Job stats:
+job         count
+--------  -------
+all             1
+cleansam        1
+fixmate         1
+sam2bam         1
+total           4
+
+Select jobs to execute...
+Execute 1 jobs...
+
+[Sun Mar 24 21:52:59 2024]
+localrule fixmate:
+    input: results/sample.sam
+    output: results/sample.fixed.sam
+    log: logs/fixmate.log
+    jobid: 3
+    reason: Missing output files: results/sample.fixed.sam
+    threads: 2
+    resources: tmpdir=/var/folders/w5/3qblr22x1kj61wv4wdd5jjhm0000gn/T
+
+RuleException in rule fixmate in file /Users/aliasmatis/Desktop/projects/Worflow/rules/alignment.smk, line 36:
+AttributeError: 'OutputFiles' object has no attribute 'log', when formatting the following:
+
+		samtools fixmate --threads {threads} --output-fmt sam {input} {output} 2> {output.log}
+		

@@ -1,0 +1,60 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 2
+Rules claiming more threads will be scaled down.
+Job stats:
+job                  count
+-----------------  -------
+all                      1
+fgbio                    1
+gatk_calling             1
+genotype_gvcf            1
+index_featurefile        1
+samtools_index           1
+samtools_sort            1
+total                    7
+
+Select jobs to execute...
+Execute 1 jobs...
+
+[Sun Mar 24 19:45:07 2024]
+localrule samtools_sort:
+    input: results/sample.trimed.aligned.bam
+    output: results/sample.trimed.aligned.sorted.bam
+    log: logs/samtools_sort.log
+    jobid: 6
+    reason: Missing output files: results/sample.trimed.aligned.sorted.bam
+    threads: 2
+    resources: tmpdir=/var/folders/w5/3qblr22x1kj61wv4wdd5jjhm0000gn/T
+
+[Sun Mar 24 19:45:07 2024]
+Finished job 6.
+1 of 7 steps (14%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Sun Mar 24 19:45:07 2024]
+localrule samtools_index:
+    input: results/sample.trimed.aligned.sorted.bam
+    output: results/sample.trimed.aligned.sorted.bam.bai
+    log: logs/samtools_index.log
+    jobid: 5
+    reason: Missing output files: results/sample.trimed.aligned.sorted.bam.bai; Input files updated by another job: results/sample.trimed.aligned.sorted.bam
+    threads: 2
+    resources: tmpdir=/var/folders/w5/3qblr22x1kj61wv4wdd5jjhm0000gn/T
+
+[Sun Mar 24 19:45:07 2024]
+Error in rule samtools_index:
+    jobid: 5
+    input: results/sample.trimed.aligned.sorted.bam
+    output: results/sample.trimed.aligned.sorted.bam.bai
+    log: logs/samtools_index.log (check log file(s) for error details)
+    shell:
+        samtools index results/sample.trimed.aligned.sorted.bam
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2024-03-24T194506.032297.snakemake.log
+WorkflowError:
+At least one job did not complete successfully.

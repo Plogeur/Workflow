@@ -1,0 +1,44 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 2
+Rules claiming more threads will be scaled down.
+Job stats:
+job         count
+--------  -------
+all             1
+cleansam        1
+fixmate         1
+sam2bam         1
+total           4
+
+Select jobs to execute...
+Execute 1 jobs...
+
+[Sun Mar 24 21:54:05 2024]
+localrule fixmate:
+    input: results/sample.sam
+    output: results/sample.fixed.sam
+    log: logs/fixmate.log
+    jobid: 3
+    reason: Missing output files: results/sample.fixed.sam
+    threads: 2
+    resources: tmpdir=/var/folders/w5/3qblr22x1kj61wv4wdd5jjhm0000gn/T
+
+[Sun Mar 24 21:54:05 2024]
+Finished job 3.
+1 of 4 steps (25%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Sun Mar 24 21:54:05 2024]
+localrule sam2bam:
+    input: results/sample.fixed.sam
+    output: results/sample.bam
+    log: logs/sam2bam.log
+    jobid: 2
+    reason: Missing output files: results/sample.bam; Input files updated by another job: results/sample.fixed.sam
+    resources: tmpdir=/var/folders/w5/3qblr22x1kj61wv4wdd5jjhm0000gn/T
+
+RuleException in rule sam2bam in file /Users/aliasmatis/Desktop/projects/Worflow/rules/alignment.smk, line 50:
+AttributeError: 'InputFiles' object has no attribute 'stdin', when formatting the following:
+gatk --java-options SamFormatConverter --INPUT {input.stdin} --OUTPUT {output.stdout} 2> {log}

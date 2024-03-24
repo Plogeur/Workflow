@@ -1,0 +1,3 @@
+[E::hts_idx_push] Unsorted positions on sequence #1: 5112 followed by 5105
+[E::sam_index] Read 'A00744:46:HV3C3DSXX:2:1102:32099:4946' with ref_name='ref', ref_length=7806, flags=0, pos=5105 cannot be indexed
+samtools index: failed to create index for "results/sample.trimed.aligned.sorted.bam"

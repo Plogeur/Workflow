@@ -1,0 +1,64 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 2
+Rules claiming more threads will be scaled down.
+Job stats:
+job               count
+--------------  -------
+all                   1
+samtools_index        1
+samtools_sort         1
+samtools_view         1
+total                 4
+
+Select jobs to execute...
+Execute 1 jobs...
+
+[Sun Mar 24 22:04:44 2024]
+localrule samtools_view:
+    input: results/sample.fixed.sam
+    output: results/sample.bam
+    jobid: 3
+    reason: Missing output files: results/sample.bam
+    threads: 2
+    resources: tmpdir=/var/folders/w5/3qblr22x1kj61wv4wdd5jjhm0000gn/T
+
+[Sun Mar 24 22:04:45 2024]
+Finished job 3.
+1 of 4 steps (25%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Sun Mar 24 22:04:45 2024]
+localrule samtools_sort:
+    input: results/sample.bam
+    output: results/sample.sorted.bam
+    jobid: 2
+    reason: Missing output files: results/sample.sorted.bam; Input files updated by another job: results/sample.bam
+    threads: 2
+    resources: tmpdir=/var/folders/w5/3qblr22x1kj61wv4wdd5jjhm0000gn/T
+
+[Sun Mar 24 22:04:45 2024]
+Finished job 2.
+2 of 4 steps (50%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Sun Mar 24 22:04:45 2024]
+localrule samtools_index:
+    input: results/sample.sorted.bam
+    output: results/sample.bam.bai
+    jobid: 1
+    reason: Missing output files: results/sample.bam.bai; Input files updated by another job: results/sample.sorted.bam
+    threads: 2
+    resources: tmpdir=/var/folders/w5/3qblr22x1kj61wv4wdd5jjhm0000gn/T
+
+Waiting at most 5 seconds for missing files.
+MissingOutputException in rule samtools_index in file /Users/aliasmatis/Desktop/projects/Worflow/rules/alignment.smk, line 68:
+Job 1  completed successfully, but some output files are missing. Missing files after 5 seconds. This might be due to filesystem latency. If that is the case, consider to increase the wait time with --latency-wait:
+results/sample.bam.bai (missing locally, parent dir contents: sample.indexed.amb, sample.indexed.bwt, sample.fixed.sam, .DS_Store, sample.sorted.bam.bai, sample.indexed.sa, sample.sorted.bam, sample.indexed.ann, sample.bam, sample.indexed.pac, sample.sam)
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2024-03-24T220440.799527.snakemake.log
+WorkflowError:
+At least one job did not complete successfully.

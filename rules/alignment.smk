@@ -3,13 +3,13 @@ rule bwa_index:
 	input:
 		ref="data/ref.fa"
 	output:
-		"results/indexed.bwt"
+		"results/sample.indexed.bwt"
 	params:
-		prefix="results/indexed"
+		prefix="results/sample.indexed"
 	log:
 		"logs/bwa_index.log"
 	shell:
-		"bwa index -p {params.prefix} {input.ref}"
+		"bwa index -p {params.prefix} {input.ref} 2> {log}"
 
 # Map fastq with indexed ref
 rule bwa_mapping:
@@ -17,47 +17,48 @@ rule bwa_mapping:
         rules.bwa_index.output,
         ref="data/sample.fastq"
     output:
-        "results/indexed.trimed.sam"
+        "results/sample.sam"
     params:
-        prefix="results/indexed"
+        prefix="results/sample.indexed"
     threads: 2
     log:
         "logs/bwa_mapping.log"
     shell:
-        "bwa mem -t {threads} {params.prefix} {input.ref} > {output}"
+        "bwa mem -t {threads} {params.prefix} {input.ref} > {output} 2> {log}"
 
-# Convert SAM to BAM with samtools view
-rule samtools_view:
+# Rule for samtools fixmate
+rule fixmate:
 	input:
 		rules.bwa_mapping.output
 	output:
-		"results/sample.trimed.aligned.bam"
+		"results/sample.fixed.sam",
+	log:
+		"logs/fixmate.log"
 	threads: 2
-	params:
-		config['samtools_view_options']
 	shell:
-		"samtools view -@ {threads} {params} {input} -o {output}"
+		"""
+		samtools fixmate --threads {threads} --output-fmt sam {input} {output} 2> {log}
+		"""
 
-# Sort aligned BAM with samtools sort
-rule samtools_sort:
+# Rule for GATK SamFormatConverter
+rule sam2bam:
 	input:
-		rules.samtools_view.output
+		rules.fixmate.output
 	output:
-		"results/sample.trimed.aligned.sorted.bam"
-	threads: 2
-	params:
-		config['samtools_sort_options']
+		"results/sample.bam",
+	log:
+		"logs/sam2bam.log"
 	shell:
-		"samtools sort -@ {threads} {params} {input} -o {output}"
+		"GATK --java-options SamFormatConverter --INPUT {input} --OUTPUT {output} 2> {log}"
 
-# Index sorted BAM with samtools index
-rule samtools_index:
+# Rule for GATK CleanSam
+rule cleansam:
 	input:
-		rules.samtools_sort.output
+		genome="data/ref.fa",
+		sam=rules.sam2bam.output
 	output:
-		"results/sample.trimed.aligned.sorted.bam.bai"
-	threads: 2
-	params:
-		config['samtools_index_options']
+		bam="results/sample.clean.bam"
+	log:
+		"logs/cleansam.log"
 	shell:
-		"samtools index -@ {threads} {params} {input}"
+		"GATK --java-options CleanSam -R {input.genome} -I {input.sam} -O {output.bam} 2> {log}"

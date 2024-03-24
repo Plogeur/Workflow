@@ -1,0 +1,27 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 2
+Rules claiming more threads will be scaled down.
+Job stats:
+job            count
+-----------  -------
+all                1
+bwa_mapping        1
+total              2
+
+Select jobs to execute...
+Execute 1 jobs...
+
+[Sun Mar 24 21:36:43 2024]
+localrule bwa_mapping:
+    input: results/sample.indexed.bwt, data/sample.fastq
+    output: results/sample.bam
+    log: logs/bwa_mapping.log
+    jobid: 1
+    reason: Missing output files: results/sample.bam
+    threads: 2
+    resources: tmpdir=/var/folders/w5/3qblr22x1kj61wv4wdd5jjhm0000gn/T
+
+RuleException in rule bwa_mapping in file /Users/aliasmatis/Desktop/projects/Worflow/rules/alignment.smk, line 15:
+AttributeError: 'Log' object has no attribute 'bwa', when formatting the following:
+bwa mem -t {threads} {input.index} {input.reads} 2> {log.bwa}

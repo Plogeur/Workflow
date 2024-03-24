@@ -1,0 +1,44 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 2
+Rules claiming more threads will be scaled down.
+Job stats:
+job                  count
+-----------------  -------
+all                      1
+fgbio                    1
+gatk_calling             1
+genotype_gvcf            1
+index_featurefile        1
+total                    5
+
+Select jobs to execute...
+Execute 1 jobs...
+
+[Sun Mar 24 19:37:13 2024]
+localrule fgbio:
+    input: data/ref.fa, results/sample.trimed.aligned.sorted.bam.bai
+    output: results/sample.trimed.fgbio.vcf
+    log: logs/fgbio.log
+    jobid: 4
+    reason: Missing output files: results/sample.trimed.fgbio.vcf
+    threads: 2
+    resources: tmpdir=/var/folders/w5/3qblr22x1kj61wv4wdd5jjhm0000gn/T
+
+[Sun Mar 24 19:37:21 2024]
+Error in rule fgbio:
+    jobid: 4
+    input: data/ref.fa, results/sample.trimed.aligned.sorted.bam.bai
+    output: results/sample.trimed.fgbio.vcf
+    log: logs/fgbio.log (check log file(s) for error details)
+    shell:
+        fgbio ClipBam -i results/sample.trimed.aligned.sorted.bam.bai -r data/ref.fa -o results/sample.trimed.fgbio.vcf --clip-overlapping-reads -c Hard -m sample_fgbio_metrics.txt
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Removing output files of failed job fgbio since they might be corrupted:
+results/sample.trimed.fgbio.vcf
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2024-03-24T193712.932783.snakemake.log
+WorkflowError:
+At least one job did not complete successfully.

@@ -1,0 +1,45 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 2
+Rules claiming more threads will be scaled down.
+Job stats:
+job            count
+-----------  -------
+all                1
+bwa_index          1
+bwa_mapping        1
+total              3
+
+Select jobs to execute...
+Execute 1 jobs...
+
+[Sun Mar 24 21:34:10 2024]
+localrule bwa_index:
+    input: data/ref.fa
+    output: results/sample.indexed.bwt
+    log: logs/bwa_index.log
+    jobid: 2
+    reason: Missing output files: results/sample.indexed.bwt
+    resources: tmpdir=/var/folders/w5/3qblr22x1kj61wv4wdd5jjhm0000gn/T
+
+[Sun Mar 24 21:34:14 2024]
+Finished job 2.
+1 of 3 steps (33%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Sun Mar 24 21:34:14 2024]
+localrule bwa_mapping:
+    input: results/sample.indexed.bwt, data/sample.fastq, data/ref.fa
+    output: results/sample.bam
+    log: logs/bwa_mapping.log
+    jobid: 1
+    reason: Missing output files: results/sample.bam; Input files updated by another job: results/sample.indexed.bwt
+    threads: 2
+    resources: tmpdir=/var/folders/w5/3qblr22x1kj61wv4wdd5jjhm0000gn/T
+
+RuleException in rule bwa_mapping in file /Users/aliasmatis/Desktop/projects/Worflow/rules/alignment.smk, line 15:
+AttributeError: 'Log' object has no attribute 'bwa', when formatting the following:
+
+		bwa mem -t {threads} {input.index} {input.reads} 2> {log.bwa} | 		samtools fixmate --threads {threads} --output-fmt sam /dev/stdin /dev/stdout 2> {log.fixmate} | 		gatk --java-options SamFormatConverter --INPUT /dev/stdin --OUTPUT /dev/stdout 2> {log.sam2bam} | 		gatk --java-options CleanSam -R {input.genome} -I /dev/stdin -O {output} 2> {log.cleansam}
+		
