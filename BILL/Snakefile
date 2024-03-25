@@ -85,7 +85,6 @@ rule help:
 	run:
 		print("")
 		print("")
-		print("Pipeline d'analyse de l'UE pédagogique BILL v2.0")
 		print("Usage: snakemake --cores [INT] [regle] [options]")
 		print("")
 		print("")
