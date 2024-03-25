@@ -1,3 +1,18 @@
+"""
+#ClipOverlaps
+rule fgbio:
+    input:
+        reference="data/ref.fa",
+        sorted=rules.samtools_index.output,
+    output:
+        temp("results/sample.trimed.fgbio.vcf")
+    threads: 2
+    params:
+        config['fgbio_options']
+    shell:
+        "fgbio ClipBam -i {input.sorted} -r {input.reference} -o {output} {params} sample_fgbio_metrics.txt"
+"""
+
 # Perform variant calling with HaplotypeCaller
 # gVCF : variants génétiques sur la couverture à travers tout le génome
 rule gatk_calling:

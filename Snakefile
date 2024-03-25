@@ -10,4 +10,5 @@ include: "rules/variants_calling.smk"
 
 rule all:
     input:
+        "results/sample_fastqc.html",
         "results/sample.fixed.sam"
